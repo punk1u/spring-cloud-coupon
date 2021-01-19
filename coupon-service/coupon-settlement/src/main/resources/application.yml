@@ -1,0 +1,17 @@
+server:
+  port: 7003
+  servlet:
+    context-path: /coupon-settlement
+
+spring:
+  application:
+    name: eureka-client-coupon-settlement
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://server1:8000/eureka/
+
+logging:
+  level:
+    tech.punklu.coupon: debug # 设置日志打印级别，大于debug模式的log打印在控制台上

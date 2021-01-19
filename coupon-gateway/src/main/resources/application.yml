@@ -1,0 +1,44 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: coupon-gateway
+
+# 将此网关应用注册到Eureka服务器上
+eureka:
+  client:
+    service-url:
+      defaultZone: http://server1:8000/eureka/
+
+
+# 配置好Zuul网关后，本来应该访问127.0.0.1:7001/coupon-template/template/build的请求可以用网关地址
+# 127.0.0.1:9000/punklu/coupon-template/template/build 通过Zuul转发进行访问
+
+# 配置网关
+zuul:
+  prefix: /punklu # 网关的前缀
+  routes:
+    # 优惠券模板微服务路由配置定义
+    template: # 名字自定义
+      path: /coupon-template/**  # 此处的coupon-template即为模板微服务配置文件中的servlet:context-path值
+      serviceId: eureka-client-coupon-template                  # 即为模板微服务配置文件中的spring:application:name的值
+      strip-prefix: false # 是否跳过前缀（coupon-template）
+    # 优惠券分发微服务 路由配置定义
+    distribution:
+      path: /coupon-distribution/**  # 此处的coupon-distribution即为分发微服务配置文件中的servlet:context-path值
+      serviceId: eureka-client-coupon-distribution                  # 即为分发微服务配置文件中的spring:application:name的值
+      strip-prefix: false # 是否跳过前缀（coupon-distribution）
+        # 优惠券结算微服务 路由配置定义
+    settlement:
+      path: /coupon-settlement/**  # 此处的coupon-settlement即为结算微服务配置文件中的servlet:context-path值
+      serviceId: eureka-client-coupon-settlement                  # 即为结算微服务配置文件中的spring:application:name的值
+      strip-prefix: false # 是否跳过前缀（coupon-settlement）
+  host:
+    connect-timeout-millis: 15000 # 连接微服务超时时间 15s
+    socket-timeout-millis: 60000  # TCP连接的超时时间
+# Zuul 负载均衡配置
+ribbon:
+  ConnectTimeOut: 15000 # Zuul通过ribbon实现负载均衡转发时的超时时间
+  ReadTimeOut: 15000 # 获取相应的超时时间
+
+

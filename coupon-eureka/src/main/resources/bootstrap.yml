@@ -1,0 +1,51 @@
+## bootstrap.yml 的优先级高于 application.yml
+#spring:
+#  application:
+#    # 三个实例的应用名必须一致，否则无法完成互相注册
+#    name: coupon-eureka
+#  profiles: server1
+#server:
+#  # 服务端口
+#  port: 8000
+#eureka:
+#  instance:
+#    hostname: server1
+#    # Spring Cloud不允许在一台机器上通过ip地址启动多个实例，此处禁用掉这个限制，通过hostname启动多个实例
+#    # 不允许是因为部署多个微服务不具备高可用
+#    prefer-ip-address: false
+#  client:
+#    service-url:
+#      # 设置Eureka Server的地址，查询服务和注册服务都需要依赖这个地址
+#      defaultZone: http://server2:8001/eureka/,http://server3:8002/eureka/
+#
+#---
+#spring:
+#  application:
+#    name: coupon-eureka
+#  profiles: server2
+#server:
+#  port: 8001
+#eureka:
+#  instance:
+#    hostname: server2
+#    prefer-ip-address: false
+#  client:
+#    service-url:
+#      # 设置Eureka Server的地址，查询服务和注册服务都需要依赖这个地址
+#      defaultZone: http://server1:8000/eureka/,http://server3:8002/eureka/
+#
+#---
+#spring:
+#  application:
+#    name: coupon-eureka
+#  profiles: server3
+#server:
+#  port: 8002
+#eureka:
+#  instance:
+#    hostname: server3
+#    prefer-ip-address: false
+#  client:
+#    service-url:
+#      # 设置Eureka Server的地址，查询服务和注册服务都需要依赖这个地址
+#      defaultZone: http://server1:8000/eureka/,http://server2:8001/eureka/
